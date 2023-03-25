@@ -37,9 +37,19 @@ const manipulate = (data) => new Promise (async (resolve, reject) => {
 
     try {
         var result = await pool.query(data);
+        var type = data.substring(0, 6);
+        var message = ''
+        if (type == 'INSERT') {
+            message = 'Insert Data Successful'
+        } else if (data.includes('deleted_at') == true) {
+            message = 'Delete Data Successful'
+        } else if (type == 'UPDATE') {
+            message = 'Update Data Successful'
+        }
+        
         resolve({
             status: "success",
-            message: ""
+            message: message
         })
     } catch (err) {
         resolve({

@@ -1,4 +1,5 @@
 const database = require('./components/database.js')
+const salary = require('./components/salary.js')
 
 const fs = require('fs').promises;
 const express = require('express');
@@ -8,16 +9,31 @@ const port = 1770;
 app.use(express.json());
 
 /**
- * SALARY
+ * SALARY GET
  */
-app.get('/salary', async (request, response) => {
-    //console.log(request.originalUrl)
-
-    response.send({
-        hehe: "hehe"
-    })
+app.get('/api/salary/:id/get', async (request, response) => {
+    var result = await salary.getData(request.params.id);
+    response.send(result)
 });
 
+app.post('/api/salary/insert', async (request, response) => {
+    var result = await salary.insertData(request.body);
+    response.send(result)
+});
+
+app.post('/api/salary/:id/update', async (request, response) => {
+    var result = await salary.updateData({
+        id: request.params.id,
+        body: request.body
+    });
+
+    response.send(result)
+});
+
+app.get('/api/salary/:id/delete', async (request, response) => {
+    var result = await salary.deleteData(request.params.id);
+    response.send(result);
+});
 /**
  * 
 */
