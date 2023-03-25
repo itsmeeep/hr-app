@@ -1,5 +1,4 @@
 const database = require('./database.js');
-const fs = require('fs').promises
 
 /**
  * Main Function
@@ -12,7 +11,8 @@ const getData = (data) => new Promise (async (resolve, reject) => {
                 var results = await database.query("SELECT * FROM salary ORDER BY id");
                 resolve({
                     status: "success",
-                    message: results.data
+                    message: "",
+                    data: results.data
                 }); 
 
                 break;
@@ -25,7 +25,8 @@ const getData = (data) => new Promise (async (resolve, reject) => {
                 var results = await database.query("SELECT * FROM salary WHERE id = "+ id +"");
                 resolve({
                     status: "success",
-                    message: results.data
+                    message: "",
+                    data: results.data
                 });
         }
     } catch (err) {
