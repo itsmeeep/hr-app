@@ -42,6 +42,7 @@ const getData = (data) => new Promise (async (resolve, reject) => {
 });
 
 const getDataJob = (params) => new Promise (async (resolve, reject) => {
+    console.log(params)
     try {
         switch (params) {
             case "all":
@@ -54,11 +55,13 @@ const getDataJob = (params) => new Promise (async (resolve, reject) => {
                 var data = [];
                 for (let i = 0; i < result.length; i++) {
                     let idx = job.findIndex((jobClass) => jobClass.id == result[i].jobclass_id);
-                    data.push({
-                        jobclass: job[idx].code,
-                        description: job[idx].description,
-                        salary: result[i].value
-                    });
+                    if (idx > -1) {
+                        data.push({
+                            jobclass: job[idx].code,
+                            description: job[idx].description,
+                            salary: result[i].value
+                        });
+                    } 
                 }
 
                 resolve({
@@ -83,13 +86,13 @@ const getDataJob = (params) => new Promise (async (resolve, reject) => {
                 var jobIdx = job.findIndex((jobClass) => jobClass.code == params.toUpperCase());
                 var salaryIdx = result.findIndex((salaryDetail) => salaryDetail.jobclass_id == job[jobIdx].id);
                 
-                data.push({
-                    jobclass: job[jobIdx].code,
-                    description: job[jobIdx].description,
-                    salary: result[salaryIdx].value
-                })
-
-                console.log(data)
+                if (salaryIdx > -1 && jobIdx > -1) {
+                    data.push({
+                        jobclass: job[jobIdx].code,
+                        description: job[jobIdx].description,
+                        salary: result[salaryIdx].value
+                    })
+                }
 
                 resolve({
                     status: "success",
@@ -173,10 +176,54 @@ const deleteData = (data) => new Promise (async (resolve, reject) => {
     }
 });
 
+const updateJobDetail = (data) => new Promise (async (resolve, reject) => {
+    console.log(data)
+    try {
+        if (isNaN(data.salary_id) == true || isNaN(data.jobclass_id) == true) {
+            throw "Invalid Parameters"
+        }
+
+        var currentDate = new Date();
+        currentDate = currentDate.getFullYear() + "-" + String(currentDate.getMonth()+1).padStart(2, '0') + "-" + String(currentDate.getDate()).padStart(2, '0');
+
+        var checkData = await database.query("SELECT id FROM salary_details WHERE jobclass_id = "+ parseInt(data.jobclass_id) +"");
+        if (checkData.data.length > 0) {
+            var results = await database.manipulate("UPDATE salary_details SET salary_id = "+ parseInt(data.salary_id) +", created_at = TO_DATE('"+ currentDate +"', 'YYYY-MM-DD') WHERE jobclass_id = "+ parseInt(data.jobclass_id) +"");
+            resolve(results)
+        } else {
+            var results = await database.manipulate("INSERT INTO salary_details (salary_id, jobclass_id, created_at) VALUES ("+ parseInt(data.salary_id) +", "+ parseInt(data.jobclass_id) +", TO_DATE('"+ currentDate +"', 'YYYY-MM-DD'))");
+            resolve(results)
+        }
+    } catch (err) {
+        resolve({
+            status: "error",
+            message: err
+        })
+    }
+});
+
+const deleteJobDetail = (data) => new Promise (async (resolve, reject) => {
+    try {
+        if (isNaN(data.salary_id) == true || isNaN(data.jobclass_id) == true) {
+            throw "Invalid Parameters"
+        }
+
+        var result = await database.manipulate("DELETE FROM salary_details WHERE salary_id = "+ parseInt(data.salary_id) +" AND jobclass_id = "+ parseInt(data.jobclass_id) +"");
+        resolve(result)
+    } catch (err) {
+        resolve({
+            status: "error",
+            message: err
+        })
+    }
+});
+
 module.exports = {
     getData,
     getDataJob,
     insertData,
     updateData,
-    deleteData
+    deleteData,
+    updateJobDetail,
+    deleteJobDetail
 }

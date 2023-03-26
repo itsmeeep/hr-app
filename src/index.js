@@ -44,6 +44,16 @@ app.get('/api/salary/:id/delete', async (request, response) => {
     var result = await salary.deleteData(request.params.id);
     response.send(result);
 });
+
+app.post('/api/salary/job/update-details', async (request, response) => {
+    var result = await salary.updateJobDetail(request.body);    
+    response.send(result);
+});
+
+app.post('/api/salary/job/delete-details', async (request, response) => {
+    var result = await salary.deleteJobDetail(request.body);    
+    response.send(result);
+});
 /* END Salary Manipulate */
 
 app.listen(port, ()=> {

@@ -41,7 +41,7 @@ const manipulate = (data) => new Promise (async (resolve, reject) => {
         var message = ''
         if (type == 'INSERT') {
             message = 'Insert Data Successful'
-        } else if (data.includes('deleted_at') == true) {
+        } else if (data.includes('deleted_at') == true || type == "DELETE") {
             message = 'Delete Data Successful'
         } else if (type == 'UPDATE') {
             message = 'Update Data Successful'

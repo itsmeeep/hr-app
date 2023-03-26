@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "97f11543-a3d7-47f2-864a-4f78ef8c5843",
+		"name": "hr-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Salary",
+			"item": [
+				{
+					"name": "GET SALARY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1770/api/salary/all/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1770",
+							"path": [
+								"api",
+								"salary",
+								"all",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SALARY BY JOB",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"salary_id\": 3,\n    \"jobclass_id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1770/api/salary/all/job/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1770",
+							"path": [
+								"api",
+								"salary",
+								"all",
+								"job",
+								"get"
+							]
+						},
+						"description": "parameters:\nall\nid => 1,2,3 etc"
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT SALARY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"salary\": \"10000\",\n    \"description\": \"coba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1770/api/salary/insert",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1770",
+							"path": [
+								"api",
+								"salary",
+								"insert"
+							]
+						},
+						"description": "salary NUMBER\ndescription CHAR(50)"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE SALARY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"salary\": 7000,\n    \"description\": \"hehe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1770/api/salary/1/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1770",
+							"path": [
+								"api",
+								"salary",
+								"1",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE SALARY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1770/api/salary/1/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1770",
+							"path": [
+								"api",
+								"salary",
+								"1",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE JOBCLASS SALARY DETAIL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"salary_id\": 3,\n    \"jobclass_id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1770/api/salary/job/update-details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1770",
+							"path": [
+								"api",
+								"salary",
+								"job",
+								"update-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE JOBCLASS SALARY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"salary_id\": 3,\n    \"jobclass_id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1770/api/salary/job/delete-details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1770",
+							"path": [
+								"api",
+								"salary",
+								"job",
+								"delete-details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
