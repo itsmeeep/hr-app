@@ -16,6 +16,10 @@ app.get('/api/salary/:id/get', async (request, response) => {
     response.send(result)
 });
 
+app.get('/api/salary/:job/job/get', async (request, response) => {
+    var result = await salary.getDataJob(request.params.job);
+    response.send(result)
+});
 // app.get('/api/salary/')
 /* END Salary GET */
 

@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const apiReader = (url) => new Promise (async (resolve, reject) => {
     try {
         var result = await fetch(url);
-        result = result.json();
+        result = await result.json();
 
         resolve({
             status: "success",

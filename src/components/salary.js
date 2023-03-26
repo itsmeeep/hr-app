@@ -1,4 +1,7 @@
+require('dotenv').config();
 const database = require('./database.js');
+const tools = require('./tools.js');
+
 
 /**
  * Main Function
@@ -38,6 +41,74 @@ const getData = (data) => new Promise (async (resolve, reject) => {
     }
 });
 
+const getDataJob = (params) => new Promise (async (resolve, reject) => {
+    try {
+        switch (params) {
+            case "all":
+                var job = await tools.apiReader(process.env.JOBCLASS_HOST + "/service-master/api/job-class");
+                var result = await database.query("SELECT salary_id, jobclass_id, value FROM salary a, salary_details b where a.id = b.salary_id");
+                
+                job = job.data.data;
+                result = result.data;
+
+                var data = [];
+                for (let i = 0; i < result.length; i++) {
+                    let idx = job.findIndex((jobClass) => jobClass.id == result[i].jobclass_id);
+                    data.push({
+                        jobclass: job[idx].code,
+                        description: job[idx].description,
+                        salary: result[i].value
+                    });
+                }
+
+                resolve({
+                    status: "success",
+                    message: "",
+                    data: data
+                })
+
+                break;
+            default:
+                if (isNaN(params) == false) {
+                    throw "Invalid Parameters";
+                }
+
+                var job = await tools.apiReader(process.env.JOBCLASS_HOST + "/service-master/api/job-class");
+                var result = await database.query("SELECT salary_id, jobclass_id, value FROM salary a, salary_details b where a.id = b.salary_id");
+
+                job = job.data.data;
+                result = result.data;
+
+                var data = [];
+                var jobIdx = job.findIndex((jobClass) => jobClass.code == params.toUpperCase());
+                var salaryIdx = result.findIndex((salaryDetail) => salaryDetail.jobclass_id == job[jobIdx].id);
+                
+                data.push({
+                    jobclass: job[jobIdx].code,
+                    description: job[jobIdx].description,
+                    salary: result[salaryIdx].value
+                })
+
+                console.log(data)
+
+                resolve({
+                    status: "success",
+                    message: "",
+                    data: data
+                })
+        }
+    } catch (err) {
+        resolve({
+            status: "error",
+            message: err,
+            data: []
+        })
+    }
+});
+
+/**
+ * Data Manipulate
+*/
 const insertData = (data) => new Promise (async (resolve, reject) => {
     try {
         if (isNaN(data.salary) == true) {
@@ -104,6 +175,7 @@ const deleteData = (data) => new Promise (async (resolve, reject) => {
 
 module.exports = {
     getData,
+    getDataJob,
     insertData,
     updateData,
     deleteData
